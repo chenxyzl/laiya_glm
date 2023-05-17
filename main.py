@@ -93,7 +93,7 @@ def init_prompts():
     ]
 
     for exmpale,_type in class_examples.items():
-        pre_history.append((f'“{exmpale}”是 {class_list} 里的什么类别？', _type))
+        pre_history.append((f'{exmpale}是 {class_list} 里的什么类别？', _type))
     
     return {'class_list': class_list, 'pre_history': pre_history}
 
