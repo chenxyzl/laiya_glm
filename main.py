@@ -111,7 +111,7 @@ def inference(
     """
     for sentence in sentences:
         with console.status("[bold bright_green] Model Inference..."):
-            sentence_with_prompt = f"“{sentence}”是 {custom_settings['class_list']} 里的什么类别？"
+            sentence_with_prompt = f"{sentence}是 {custom_settings['class_list']} 里的什么类别？"
             response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'])
         print(f'>>> [bold bright_red]sentence: {sentence}')
         print(f'>>> [bold bright_green]inference answer: {response}')
@@ -122,9 +122,9 @@ if __name__ == '__main__':
     console = Console()
 
     device = 'cuda:0'
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
-    model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half()
-    model.to(device)
+    # tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
+    # model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half()
+    # model.to(device)
 
     sentences = [
         "有人玩吗",
@@ -133,7 +133,9 @@ if __name__ == '__main__':
         "1等全世界",
         "有车吗"
         "2四星",
-        "不知道"
+        "不知道",
+        "哈哈",
+        "110938109380-12938-",
     ]
     
     custom_settings = init_prompts()
