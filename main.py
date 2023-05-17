@@ -120,7 +120,7 @@ def inference(
     for sentence in sentences:
         with console.status("[bold bright_green] Model Inference..."):
             sentence_with_prompt = f' "{sentence}" 是 {custom_settings["class_list"]} 里的什么类别？'
-            response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'], max_new_tokens=20480)
+            response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'], max_length=20480)
         print(f'>>> [bold bright_red]sentence: {sentence}')
         print(f'>>> [bold bright_green]inference answer: {response}')
         # print(history)
@@ -139,7 +139,7 @@ if __name__ == '__main__':
         "蹲个车车",
         "3=1",
         "1等全世界",
-        "有车吗"
+        "有车吗",
         "2四星",
         "fasdfoaqiuoe",
         "不知道",
