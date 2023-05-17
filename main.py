@@ -84,7 +84,7 @@ def init_prompts():
     """
     初始化前置prompt，便于模型做 incontext learning。
     """
-    unknown = "不知道"
+    unknown = "未知"
     class_list = list(set(class_examples.values()))
     class_list.append(unknown)
     pre_history = [
