@@ -84,12 +84,12 @@ def init_prompts():
     """
     初始化前置prompt，便于模型做 incontext learning。
     """
-    unknown = "未知类"
+    unknown = "未知"
     class_list = list(set(class_examples.values()))
     class_list.append(unknown)
     pre_history = [
         (
-            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。不确定归类到 {unknown} ',
+            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。不确定怎么分类的就分类到 {unknown} ',
             f'好的。'
         )
     ]
@@ -130,9 +130,9 @@ if __name__ == '__main__':
     console = Console()
 
     device = 'cuda:0'
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True)
-    model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
-    model.to(device)
+    # tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True)
+    # model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
+    # model.to(device)
 
     sentences = [
         "有人玩吗",
