@@ -95,12 +95,14 @@ def init_prompts():
     ]
 
     for exmpale,_type in class_examples.items():
-        pre_history.append((f'{exmpale}是 {class_list} 里的什么类别？', _type))
+        pre_history.append((f'"{exmpale}" 是 {class_list} 里的什么类别？', _type))
 
-    pre_history.append((f' jfapfa 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' 12131231 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' 嘿嘿 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' 哈哈 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "jfapfa" 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "kjzhxc9087   23rha980" 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "podiafopi2u0r4iaud098avphn" 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "1214556413265415781231" 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "嘿嘿" 是 {class_list} 里的什么类别？', unknown))
+    pre_history.append((f' "哈哈" 是 {class_list} 里的什么类别？', unknown))
     return {'class_list': class_list, 'pre_history': pre_history}
 
 
@@ -117,7 +119,7 @@ def inference(
     """
     for sentence in sentences:
         with console.status("[bold bright_green] Model Inference..."):
-            sentence_with_prompt = f"{sentence}是 {custom_settings['class_list']} 里的什么类别？"
+            sentence_with_prompt = f' "{sentence}" 是 {custom_settings["class_list"]} 里的什么类别？'
             response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'])
         print(f'>>> [bold bright_red]sentence: {sentence}')
         print(f'>>> [bold bright_green]inference answer: {response}')
@@ -139,7 +141,7 @@ if __name__ == '__main__':
         "1等全世界",
         "有车吗"
         "2四星",
-        "fasdfoaqiuoe"
+        "fasdfoaqiuoe",
         "不知道",
         "哈哈",
         "110938109380-12938-",
