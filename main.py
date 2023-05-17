@@ -86,9 +86,10 @@ def init_prompts():
     """
     unknown = "不知道"
     class_list = list(set(class_examples.values()))
+    class_list.append(unknown)
     pre_history = [
         (
-            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。如果不在这些分类中则回复 {unknown} ',
+            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。不确定的都认为是 {unknown} ',
             f'好的。'
         )
     ]
@@ -138,6 +139,7 @@ if __name__ == '__main__':
         "1等全世界",
         "有车吗"
         "2四星",
+        "fasdfoaqiuoe"
         "不知道",
         "哈哈",
         "110938109380-12938-",
