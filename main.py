@@ -84,12 +84,12 @@ def init_prompts():
     """
     初始化前置prompt，便于模型做 incontext learning。
     """
-    unknown = "未知"
+    unknown = "未知类"
     class_list = list(set(class_examples.values()))
     class_list.append(unknown)
     pre_history = [
         (
-            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。不确定的都认为是 {unknown} ',
+            f'现在你是一个文本分类器，你需要按照要求将我给你的句子分类到：{class_list}类别中。不确定归类到 {unknown} ',
             f'好的。'
         )
     ]
