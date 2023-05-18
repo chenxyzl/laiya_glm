@@ -23,6 +23,7 @@ Date: 2023/03/17
 from rich import print
 from rich.console import Console
 from transformers import AutoTokenizer, AutoModel
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 unknown = "无意义"
 
@@ -84,6 +85,7 @@ class_examples = {
         '1214556413265415781231':f'{unknown}',
         '嘿嘿':f'{unknown}',
         '哈哈':f'{unknown}',
+        '好啊':f'{unknown}',
     }
 
 
@@ -103,6 +105,25 @@ def init_prompts():
         pre_history.append((f'"{exmpale}" 是 [{",".join(class_list)}] 里的什么类别？'.replace("\'",""), _type))
     return {'class_list': class_list, 'pre_history': pre_history}
 
+
+def inferenceStr(
+        sentence: str,
+        custom_settings: dict
+    ):
+    """
+    推理函数。
+
+    Args:
+        sentences (List[str]): 待推理的句子。
+        custom_settings (dict): 初始设定，包含人为给定的 few-shot example。
+    """
+    with console.status("[bold bright_green] Model Inference..."):
+        sentence_with_prompt = f' "{sentence}" 是 {custom_settings["class_list"]} 里的什么类别？'
+        response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'],max_new_tokens=20480)
+        print(f'>>> [bold bright_red]sentence: {sentence}')
+        print(f'>>> [bold bright_green]inference answer: {response}')
+        # print(history)
+    return response
 
 def inference(
         sentences: list,
@@ -124,6 +145,30 @@ def inference(
         # print(history)
 
 
+class MyHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        # 获取请求内容长度
+        content_length = int(self.headers.get('Content-Length', 0))
+
+        # 读取请求数据
+        request_data = self.rfile.read(content_length).decode('utf-8')
+
+        # 设置响应头
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/plain')
+        self.end_headers()
+
+       
+        custom_settings = init_prompts()
+        response_data = inferenceStr(
+            request_data,
+            custom_settings
+        )
+
+        # 设置响应内容
+        self.wfile.write(response_data.encode('utf-8'))
+
+
 if __name__ == '__main__':
     console = Console()
 
@@ -132,21 +177,26 @@ if __name__ == '__main__':
     model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
     model.to(device)
 
-    sentences = [
-        "有人玩吗",
-        "蹲个车车",
-        "3=1",
-        "1等全世界",
-        "有车吗",
-        "2四星",
-        "fasdfoaqiuoe",
-        "不知道",
-        "哈哈",
-        "110938109380-12938-",
-    ]
+    # sentences = [
+    #     "有人玩吗",
+    #     "蹲个车车",
+    #     "3=1",
+    #     "1等全世界",
+    #     "有车吗",
+    #     "2四星",
+    #     "fasdfoaqiuoe",
+    #     "不知道",
+    #     "哈哈",
+    #     "110938109380-12938-",
+    # ]
     
-    custom_settings = init_prompts()
-    inference(
-        sentences,
-        custom_settings
-    )
+    # custom_settings = init_prompts()
+    # inference(
+    #     sentences,
+    #     custom_settings
+    # )
+
+    server_address = ('', 21000)
+    httpd = HTTPServer(server_address, MyHTTPRequestHandler)
+    print('Server is running at http://localhost:21000/')
+    httpd.serve_forever()
