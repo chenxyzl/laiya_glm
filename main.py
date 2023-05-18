@@ -120,7 +120,7 @@ def inferenceStr(
     with console.status("[bold bright_green] Model Inference..."):
         sentence_with_prompt = f' "{sentence}" 是 {custom_settings["class_list"]} 里的什么类别？'
         response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'],max_new_tokens=20480)
-        print(f'>>> [bold bright_red]sentence: {sentence}')
+        print(f'>>> [bold bright_red]sentence_with_prompt: {sentence_with_prompt}')
         print(f'>>> [bold bright_green]inference answer: {response}')
         print(history)
     return response
