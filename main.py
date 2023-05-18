@@ -122,7 +122,7 @@ def inferenceStr(
         response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'],max_new_tokens=20480)
         print(f'>>> [bold bright_red]sentence: {sentence}')
         print(f'>>> [bold bright_green]inference answer: {response}')
-        # print(history)
+        print(history)
     return response
 
 def inference(
@@ -158,8 +158,6 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'text/plain')
         self.end_headers()
 
-       
-        custom_settings = init_prompts()
         response_data = inferenceStr(
             request_data,
             custom_settings
@@ -177,6 +175,9 @@ if __name__ == '__main__':
     model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
     model.to(device)
 
+    custom_settings = init_prompts()
+    print(f'>>> [bold bright_red]custom_settings: {custom_settings}')
+
     # sentences = [
     #     "有人玩吗",
     #     "蹲个车车",
@@ -190,7 +191,7 @@ if __name__ == '__main__':
     #     "110938109380-12938-",
     # ]
     
-    # custom_settings = init_prompts()
+    
     # inference(
     #     sentences,
     #     custom_settings
