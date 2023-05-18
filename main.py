@@ -129,9 +129,9 @@ if __name__ == '__main__':
     console = Console()
 
     device = 'cuda:0'
-    # tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True)
-    # model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
-    # model.to(device)
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/chatglm-6b-int8", trust_remote_code=True).half()
+    model.to(device)
 
     sentences = [
         "有人玩吗",
