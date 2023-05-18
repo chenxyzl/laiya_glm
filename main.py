@@ -24,6 +24,7 @@ from rich import print
 from rich.console import Console
 from transformers import AutoTokenizer, AutoModel
 
+unknown = "无意义"
 
 # 提供所有类别以及每个类别下的样例
 class_examples = {
@@ -77,6 +78,12 @@ class_examples = {
         '那继续3＝1':'约玩',
         '下午茶有嘛2=2[苦涩]':'约玩',
         '有厨2车车🚗不':'约玩',
+        'jfapfa':f'{unknown}',
+        'kjzhxc9087   23rha980':f'{unknown}',
+        'podiafopi2u0r4iaud098avphn':f'{unknown}',
+        '1214556413265415781231':f'{unknown}',
+        '嘿嘿':f'{unknown}',
+        '哈哈':f'{unknown}',
     }
 
 
@@ -84,7 +91,6 @@ def init_prompts():
     """
     初始化前置prompt，便于模型做 incontext learning。
     """
-    unknown = "未知"
     class_list = list(set(class_examples.values()))
     class_list.append(unknown)
     pre_history = [
@@ -96,13 +102,6 @@ def init_prompts():
 
     for exmpale,_type in class_examples.items():
         pre_history.append((f'"{exmpale}" 是 {class_list} 里的什么类别？', _type))
-
-    pre_history.append((f' "jfapfa" 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' "kjzhxc9087   23rha980" 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' "podiafopi2u0r4iaud098avphn" 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' "1214556413265415781231" 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' "嘿嘿" 是 {class_list} 里的什么类别？', unknown))
-    pre_history.append((f' "哈哈" 是 {class_list} 里的什么类别？', unknown))
     return {'class_list': class_list, 'pre_history': pre_history}
 
 
@@ -120,7 +119,7 @@ def inference(
     for sentence in sentences:
         with console.status("[bold bright_green] Model Inference..."):
             sentence_with_prompt = f' "{sentence}" 是 {custom_settings["class_list"]} 里的什么类别？'
-            response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'], max_length=20480)
+            response, history = model.chat(tokenizer, sentence_with_prompt, history=custom_settings['pre_history'], max_new_length=20480)
         print(f'>>> [bold bright_red]sentence: {sentence}')
         print(f'>>> [bold bright_green]inference answer: {response}')
         # print(history)
